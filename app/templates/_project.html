@@ -1,0 +1,17 @@
+<table class="table table-hover">
+    <tr>
+        <td width="70px">
+            <a href="{{ url_for('user.user', username=project.author.username) }}">
+                <img src="{{ project.author.avatar(70) }}" />
+            </a>
+        </td>
+        <td>
+            <a class="user_popup" href="{{ url_for('user.user', username=project.author.username) }}">
+                {{ project.author.username }}
+            </a>
+            said {{ moment(project.timestamp).fromNow() }}:
+            <br>
+            {{ project.description }}
+        </td>
+    </tr>
+</table>

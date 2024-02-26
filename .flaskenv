@@ -1,0 +1,2 @@
+FLASK_APP=TRL_calculator.py
+FLASK_DEBUG=1 
