@@ -21,7 +21,13 @@ def before_request():
 def index():
     form = ProjectForm()
     if form.validate_on_submit():
-        project = Project(title=form.title.data, description=form.description.data, author=current_user)
+        project = Project(title=form.title.data,
+                          grant_title = form.grant_title.data,
+                          lead_pi = form.lead_pi.data,
+                          starting_trl = form.starting_trl.data,
+                          anticipated_ending_trl = form.anticipated_ending_trl.data,                           
+                          description=form.description.data,
+                          author=current_user)
         db.session.add(project)
         db.session.commit()
         flash('Your project is now live!')
