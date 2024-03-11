@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from flask import render_template, flash, redirect, url_for, request, current_app
+from flask import jsonify, render_template, flash, redirect, url_for, request, abort, current_app
 from flask_login import current_user, login_required
 import sqlalchemy as sa
 from app import db
@@ -30,7 +30,7 @@ def index():
                           author=current_user)
         db.session.add(project)
         db.session.commit()
-        flash('Your project is now live!')
+        flash('Your project has been saved')
         return redirect(url_for('main.index'))
     page = request.args.get('page', 1, type=int)
     projects = db.paginate(current_user.following_projects(), page=page,
@@ -57,3 +57,57 @@ def explore():
         if projects.has_prev else None
     return render_template('index.html', title='Explore', projects=projects.items,
                            next_url=next_url, prev_url=prev_url)
+
+@bp.route('/api/data')
+def data():
+    print("*** reading project from database")
+    query = Project.query    
+    
+    # search filter
+    search = request.args.get('search')
+    if search:
+        query = query.filter(db.or_(
+            Project.title.like(f'%{search}%'),
+            Project.lead_pi.like(f'%{search}%')
+        ))
+    total = query.count()
+
+    # sorting
+    sort = request.args.get('sort')
+    if sort:
+        order = []
+        for s in sort.split(','):
+            direction = s[0]
+            lead_pi = s[1:]
+            if lead_pi not in ['lead_pi']:
+                lead_pi = 'lead_pi'
+            col = getattr(Project, lead_pi)
+            if direction == '-':
+                col = col.desc()
+            order.append(col)
+        if order:
+            query = query.order_by(*order)
+
+    # pagination
+    start = request.args.get('start', type=int, default=-1)
+    length = request.args.get('length', type=int, default=-1)
+    if start != -1 and length != -1:
+        query = query.offset(start).limit(length)
+
+    return {
+        'data': [project.to_dict() for project in query],
+        'total': total,
+    }
+
+
+@bp.route('/api/data', methods=['POST'])
+def update():
+    data = request.get_json()
+    if 'id' not in data:
+        abort(400)
+    project = Project.query.get(data['id'])
+    for field in ['title', 'lead_pi', 'description']:
+        if field in data:
+            setattr(project, field, data[field])
+    db.session.commit()
+    return '', 204

@@ -163,8 +163,8 @@ class Project(db.Model):
     lead_pi: so.Mapped[str] = so.mapped_column(sa.String(140))
     starting_trl: so.Mapped[str] = so.mapped_column(sa.String(50))
     anticipated_ending_trl: so.Mapped[str] = so.mapped_column(sa.String(50))
-    current_status: so.Mapped[str] = so.mapped_column(sa.String(140))
-    actual_ending_trl: so.Mapped[str] = so.mapped_column(sa.String(50))
+    current_status: so.Mapped[str] = so.mapped_column(sa.String(140), nullable=True)
+    actual_ending_trl: so.Mapped[str] = so.mapped_column(sa.String(50), nullable=True)
     description: so.Mapped[str] = so.mapped_column(sa.String(140))
     timestamp: so.Mapped[datetime] = so.mapped_column(
         index=True, default=lambda: datetime.now(timezone.utc))
@@ -172,8 +172,22 @@ class Project(db.Model):
                                                index=True)
     author: so.Mapped[User] = so.relationship(back_populates='projects')
 
+    def to_dictt(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'grant_title': self.grant_title,
+            'lead_pi': self.lead_pi,
+            'starting_trl': self.starting_trl,
+            'anticipated_ending_trl': self.anticipated_ending_trl,
+            'description': self.description,
+            'author': self.author.username           
+        }
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
     def __repr__(self):
-        return '<Project {}>'.format(self.body)
+        return '<Project {}>'.format(self.title)
     
 
 class Message(db.Model):
