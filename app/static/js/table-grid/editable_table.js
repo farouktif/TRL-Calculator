@@ -23,6 +23,9 @@ new gridjs.Grid({
     { id: 'anticipated_ending_trl', name: 'Anticipated Ending TRL', sort: false },
     { id: 'description', name: 'Description', sort: false, 'attributes': editableCellAttributes },
     { id: 'author', name: 'Author' },
+    { id: 'id', name: 'Assess TRL', formatter: (cell, row) => {
+      return gridjs.html('<a class="btn btn-outline-info" href="/trl-questionnaire/' + cell + '">Assess TRL</a>');
+    }},
   ],
   server: {
     url: '/api/data',
@@ -56,6 +59,20 @@ new gridjs.Grid({
       },
     },
   },
+  style: {
+    table: {
+      border: '2px solid #ccc'
+    },
+    th: {
+      'background-color': 'rgba(0, 0, 0, 0.1)',
+      color: '#000',
+      'border-bottom': '3px solid #ccc',
+      'text-align': 'center'
+    },
+    td: {      
+      'word-wrap': 'break-word'
+    }
+  }
 }).render(tableDiv);
 
 let savedValue;

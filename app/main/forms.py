@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, TextAreaField, SelectField
+from wtforms import SubmitField, TextAreaField, SelectField, StringField
 from wtforms.validators import DataRequired
 
             
-class ProjectForm(FlaskForm):
-    title = TextAreaField('Proposal Title', validators=[DataRequired()])
-    lead_pi = TextAreaField('Lead PI', validators=[DataRequired()])
+class ProjectForm(FlaskForm):    
+    title = StringField('Proposal Title', validators=[DataRequired()])
+    lead_pi = StringField('Lead PI', validators=[DataRequired()])
     description = TextAreaField('Proposal Description', validators=[DataRequired()])
     grant_title = SelectField('Grant Type', choices=[('TRG', 'TRG')], validators=[DataRequired()])
     starting_trl = SelectField('Starting TRL', choices=[('TRL1', 'TRL-1'), ('TRL2', 'TRL-2'), 

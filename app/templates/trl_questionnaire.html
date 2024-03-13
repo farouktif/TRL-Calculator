@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+{%- block styles %}
+{{ super() }}
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+
+{%- endblock styles %}
+
+{% block content %}
+<div>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <div class="card border-primary mb-3">
+                <div class="card-header">
+                    Create
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Title</span>                        
+                        <input class="form-control" type="text" value="{{ project.title }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Grant name</span>                        
+                        <input class="form-control" type="text" value="{{ project.grant_title }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Lead PI</span>                        
+                        <input class="form-control" type="text" value="{{ project.lead_pi }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Stareting TRL</span>                        
+                        <input class="form-control" type="text" value="{{ project.starting_trl }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Anticipated Ending TRL</span>                        
+                        <input class="form-control" type="text" value="{{ project.anticipated_ending_trl }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Current Status</span>                        
+                        <input class="form-control" type="text" value="{{ project.current_status }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text p-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle" id="inputGroup-sizing-default">Actual Ending TRL</span>                       
+                        <input class="form-control" type="text" value="{{ project.actual_ending_trl }}" aria-label="Disabled input example" disabled readonly>
+                    </div>                                         
+                </div>
+            </div>          
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{%- block scripts %}
+{{ super() }}
+<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+<!-- editable table -->
+<script src="{{ url_for('static', filename='/js/table-grid/editable_table.js') }}"></script>
+
+
+{%- endblock scripts %}

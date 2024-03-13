@@ -111,3 +111,10 @@ def update():
             setattr(project, field, data[field])
     db.session.commit()
     return '', 204
+
+@bp.route('/trl-questionnaire/<int:id>')
+@login_required
+def trl_questionnaire(id):
+    project = db.first_or_404(sa.select(Project).where(Project.id == id))
+
+    return render_template('trl_questionnaire.html', project=project)
